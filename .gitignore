@@ -40,3 +40,16 @@ release.properties
 # Gradle files
 .gradle/
 build/
+
+
+# Ignore system files
+.DS_Store
+
+# Ignore output file
+output.txt
+
+# Ignore all files and directories in src/
+src/
+
+# But do not ignore SnakeGame.java
+!src/com/javarush/task/jdk13/task53/task5303/SnakeGame.java
