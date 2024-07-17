@@ -53,3 +53,4 @@ src/
 
 # But do not ignore SnakeGame.java
 !src/com/javarush/task/jdk13/task53/task5303/SnakeGame.java
+!src/com/javarush/task/jdk13/task53/task5303/GameObject.java
