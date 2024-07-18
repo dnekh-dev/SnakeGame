@@ -10,6 +10,7 @@ public class Snake extends GameObject {
     private List<GameObject> snakeParts = new ArrayList<>();
     private static final String HEAD_SIGN = "\uD83D\uDC7E";
     private static final String BODY_SIGN = "\u26AB";
+    public boolean isAlive = true;
 
     public Snake(int x, int y) {
         super(x, y);
@@ -21,9 +22,9 @@ public class Snake extends GameObject {
     public void draw(Game game) {
         for (int i = 0; i < snakeParts.size(); i++) {
             if (i == 0) {
-                game.setCellValue(snakeParts.get(i).x, snakeParts.get(i).y, HEAD_SIGN);
+                game.setCellValueEx(snakeParts.get(i).x, snakeParts.get(i).y, Color.NONE, HEAD_SIGN, isAlive ? Color.GREEN : Color.RED, 75);
             } else {
-                game.setCellValue(snakeParts.get(i).x, snakeParts.get(i).y, BODY_SIGN);
+                game.setCellValueEx(snakeParts.get(i).x, snakeParts.get(i).y, Color.NONE, BODY_SIGN, isAlive ? Color.BLACK : Color.RED, 75);
             }
         }
     }
