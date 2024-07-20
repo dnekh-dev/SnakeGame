@@ -31,7 +31,19 @@ public class Snake extends GameObject {
     }
 
     public void setDirection(Direction direction) {
-        this.direction = direction;
+        if (direction == Direction.LEFT && this.direction != Direction.RIGHT) {
+            this.direction = direction;
+        } else if (direction == Direction.UP && this.direction != Direction.DOWN) {
+            this.direction = direction;
+        } else if (direction == Direction.RIGHT && this.direction != Direction.LEFT) {
+            this.direction = direction;
+        } else if (direction == Direction.DOWN && this.direction != Direction.UP) {
+            this.direction = direction;
+        }
+    }
+
+    public Direction getDirection() {
+        return direction;
     }
 
     public void move() {
