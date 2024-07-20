@@ -35,7 +35,14 @@ public class Snake extends GameObject {
     }
 
     public void move() {
-        setDirection(Direction.LEFT);
+        setDirection(Direction.UP);
+        GameObject newHead = createNewHead();
+        if (newHead.x < 0 || newHead.x > 14 || newHead.y < 0 || newHead.y > 14) {
+            isAlive = false;
+            return;
+        }
+        snakeParts.add(0, newHead);
+        removeTail();
     }
 
     public GameObject createNewHead() {
