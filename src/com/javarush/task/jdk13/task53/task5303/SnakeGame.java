@@ -17,6 +17,9 @@ public class SnakeGame extends Game {
     private static final int GOAL = 28; // The goal length of the snake to win
     private int score; // The score of the game
 
+    private static final String GAME_OVER_MESSAGE = "GAME OVER!";
+    private static final String WIN_MESSAGE = "YOU WIN!";
+
     /**
      * Initializes the game screen and starts the game.
      */
@@ -88,14 +91,21 @@ public class SnakeGame extends Game {
             createGame(); // Restart the game
         }
         if (snake != null) { // If the snake exists
-            if (key == Key.LEFT) {
-                snake.setDirection(Direction.LEFT); // Change snake direction to LEFT
-            } else if (key == Key.UP) {
-                snake.setDirection(Direction.UP); // Change snake direction to UP
-            } else if (key == Key.RIGHT) {
-                snake.setDirection(Direction.RIGHT); // Change snake direction to RIGHT
-            } else if (key == Key.DOWN) {
-                snake.setDirection(Direction.DOWN); // Change snake direction to DOWN
+            switch (key) {
+                case LEFT:
+                    snake.setDirection(Direction.LEFT);
+                    break;
+                case UP:
+                    snake.setDirection(Direction.UP);
+                    break;
+                case RIGHT:
+                    snake.setDirection(Direction.RIGHT);
+                    break;
+                case DOWN:
+                    snake.setDirection(Direction.DOWN);
+                    break;
+                default:
+                    break;
             }
         }
     }
@@ -121,7 +131,7 @@ public class SnakeGame extends Game {
     private void gameOver() {
         stopTurnTimer(); // Stop the game timer
         isGameStopped = true; // Set the game as stopped
-        showMessageDialog(Color.BLACK, "GAME OVER!", Color.WHITE, 75); // Display "GAME OVER!" message
+        showMessageDialog(Color.BLACK, GAME_OVER_MESSAGE, Color.WHITE, 75); // Display "GAME OVER!" message
     }
 
     /**
@@ -130,6 +140,6 @@ public class SnakeGame extends Game {
     private void win() {
         stopTurnTimer(); // Stop the game timer
         isGameStopped = true; // Set the game as stopped
-        showMessageDialog(Color.BLUEVIOLET, "YOU WIN!", Color.FLORALWHITE, 75); // Display "YOU WIN!" message
+        showMessageDialog(Color.BLUEVIOLET, WIN_MESSAGE, Color.FLORALWHITE, 75); // Display "YOU WIN!" message
     }
 }
