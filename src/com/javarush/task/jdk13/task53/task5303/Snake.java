@@ -49,6 +49,10 @@ public class Snake extends GameObject {
     public void move(Apple apple) {
         setDirection(Direction.LEFT);
         GameObject newHead = createNewHead();
+        if (checkCollision(newHead)) {
+            isAlive = false;
+            return;
+        }
         if (apple.x == newHead.x && apple.y == newHead.y) {
             apple.isAlive = false;
             snakeParts.add(new GameObject(snakeParts.get(snakeParts.size()- 1).x + 1, y ));
@@ -75,5 +79,14 @@ public class Snake extends GameObject {
 
     public void removeTail() {
         snakeParts.remove(snakeParts.size() - 1);
+    }
+
+    public boolean checkCollision(GameObject gameObject) {
+        for (int i = 0; i < snakeParts.size(); i++) {
+            if (gameObject.x == snakeParts.get(i).x && gameObject.y == snakeParts.get(i).y) {
+                return true;
+            }
+        }
+        return false;
     }
 }
