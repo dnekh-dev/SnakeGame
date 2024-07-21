@@ -59,7 +59,7 @@ public class Snake extends GameObject {
     }
 
     public void move(Apple apple) {
-        setDirection(Direction.LEFT);
+//        setDirection(Direction.LEFT);
         GameObject newHead = createNewHead();
         if (checkCollision(newHead)) {
             isAlive = false;
