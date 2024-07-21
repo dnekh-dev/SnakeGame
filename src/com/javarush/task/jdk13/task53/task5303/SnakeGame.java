@@ -54,6 +54,10 @@ public class SnakeGame extends Game {
 
     @Override
     public void onKeyPress(Key key) {
+        if (key == Key.SPACE && isGameStopped) {
+            createGame();
+        }
+
         if (key == Key.LEFT) {
             snake.setDirection(Direction.LEFT);
         } else if (key == Key.UP) {
@@ -66,9 +70,14 @@ public class SnakeGame extends Game {
     }
 
     private void createNewApple() {
-        int newX = getRandomNumber(WIDTH);
-        int newY = getRandomNumber(HEIGHT);
-        apple = new Apple(newX, newY);
+        int newX;
+        int newY;
+        do {
+            newX = getRandomNumber(WIDTH);
+            newY = getRandomNumber(HEIGHT);
+            apple = new Apple(newX, newY);
+        }
+        while (snake.checkCollision(apple));
     }
 
     private void gameOver() {
