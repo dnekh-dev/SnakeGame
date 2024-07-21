@@ -11,6 +11,7 @@ public class SnakeGame extends Game {
     private Apple apple;
     private boolean isGameStopped;
     private static final int GOAL = 28;
+    private int score;
 
     @Override
     public void initialize() {
@@ -21,6 +22,8 @@ public class SnakeGame extends Game {
     private void createGame() {
         snake = new Snake(WIDTH / 2, HEIGHT / 2);
         isGameStopped = false;
+        score = 0;
+        setScore(score);
         createNewApple();
         drawScene();
         turnDelay = 300;
@@ -40,7 +43,11 @@ public class SnakeGame extends Game {
     @Override
     public void onTurn(int step) {
         snake.move(apple);
-        if (apple.isAlive == false) {
+        if (!apple.isAlive) {
+            score += 5;
+            setScore(score);
+            turnDelay -= 10;
+            setTurnTimer(turnDelay);
             createNewApple();
         }
         if (!snake.isAlive) {
@@ -57,15 +64,16 @@ public class SnakeGame extends Game {
         if (key == Key.SPACE && isGameStopped) {
             createGame();
         }
-
-        if (key == Key.LEFT) {
-            snake.setDirection(Direction.LEFT);
-        } else if (key == Key.UP) {
-            snake.setDirection(Direction.UP);
-        } else if (key == Key.RIGHT) {
-            snake.setDirection(Direction.RIGHT);
-        } else if (key == Key.DOWN) {
-            snake.setDirection(Direction.DOWN);
+        if (snake != null) {
+            if (key == Key.LEFT) {
+                snake.setDirection(Direction.LEFT);
+            } else if (key == Key.UP) {
+                snake.setDirection(Direction.UP);
+            } else if (key == Key.RIGHT) {
+                snake.setDirection(Direction.RIGHT);
+            } else if (key == Key.DOWN) {
+                snake.setDirection(Direction.DOWN);
+            }
         }
     }
 
