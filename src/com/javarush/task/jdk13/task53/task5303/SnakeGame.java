@@ -2,6 +2,9 @@ package com.javarush.task.jdk13.task53.task5303;
 
 import com.javarush.engine.cell.*;
 
+/**
+ * The main class for the Snake game.
+ */
 public class SnakeGame extends Game {
 
     public static final int WIDTH = 15;
@@ -13,12 +16,18 @@ public class SnakeGame extends Game {
     private static final int GOAL = 28;
     private int score;
 
+    /**
+     * Initializes the game screen and starts the game.
+     */
     @Override
     public void initialize() {
         setScreenSize(WIDTH, HEIGHT);
         createGame();
     }
 
+    /**
+     * Creates a new game, initializes the snake, apple, and other game variables.
+     */
     private void createGame() {
         snake = new Snake(WIDTH / 2, HEIGHT / 2);
         isGameStopped = false;
@@ -30,6 +39,9 @@ public class SnakeGame extends Game {
         setTurnTimer(turnDelay);
     }
 
+    /**
+     * Draws the entire game scene including the snake and the apple.
+     */
     private void drawScene() {
         for (int x = 0; x < WIDTH; x++) {
             for (int y = 0; y < HEIGHT; y++) {
@@ -40,6 +52,11 @@ public class SnakeGame extends Game {
         apple.draw(this);
     }
 
+    /**
+     * Updates the game state on each turn.
+     *
+     * @param step The current step of the game.
+     */
     @Override
     public void onTurn(int step) {
         snake.move(apple);
@@ -59,6 +76,11 @@ public class SnakeGame extends Game {
         drawScene();
     }
 
+    /**
+     * Handles key press events for controlling the snake and restarting the game.
+     *
+     * @param key The key that was pressed.
+     */
     @Override
     public void onKeyPress(Key key) {
         if (key == Key.SPACE && isGameStopped) {
@@ -77,6 +99,10 @@ public class SnakeGame extends Game {
         }
     }
 
+    /**
+     * Creates a new apple at a random position on the game field.
+     * Ensures that the apple does not collide with the snake.
+     */
     private void createNewApple() {
         int newX;
         int newY;
@@ -88,12 +114,18 @@ public class SnakeGame extends Game {
         while (snake.checkCollision(apple));
     }
 
+    /**
+     * Ends the game and displays a "GAME OVER" message.
+     */
     private void gameOver() {
         stopTurnTimer();
         isGameStopped = true;
         showMessageDialog(Color.BLACK, "GAME OVER!", Color.WHITE, 75);
     }
 
+    /**
+     * Ends the game and displays a "YOU WIN!" message.
+     */
     private void win() {
         stopTurnTimer();
         isGameStopped = true;
