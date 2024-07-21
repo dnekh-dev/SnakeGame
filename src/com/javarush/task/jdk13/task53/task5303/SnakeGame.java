@@ -7,36 +7,37 @@ import com.javarush.engine.cell.*;
  */
 public class SnakeGame extends Game {
 
+    // Game field dimensions
     public static final int WIDTH = 15;
     public static final int HEIGHT = 15;
-    private Snake snake;
-    private int turnDelay;
-    private Apple apple;
-    private boolean isGameStopped;
-    private static final int GOAL = 28;
-    private int score;
+    private Snake snake; // The snake object
+    private int turnDelay; // Delay between game turns in milliseconds
+    private Apple apple; // The apple object
+    private boolean isGameStopped; // Flag to check if the game is stopped
+    private static final int GOAL = 28; // The goal length of the snake to win
+    private int score; // The score of the game
 
     /**
      * Initializes the game screen and starts the game.
      */
     @Override
     public void initialize() {
-        setScreenSize(WIDTH, HEIGHT);
-        createGame();
+        setScreenSize(WIDTH, HEIGHT); // Set the size of the game screen
+        createGame(); // Start a new game
     }
 
     /**
      * Creates a new game, initializes the snake, apple, and other game variables.
      */
     private void createGame() {
-        snake = new Snake(WIDTH / 2, HEIGHT / 2);
-        isGameStopped = false;
-        score = 0;
-        setScore(score);
-        createNewApple();
-        drawScene();
-        turnDelay = 300;
-        setTurnTimer(turnDelay);
+        snake = new Snake(WIDTH / 2, HEIGHT / 2); // Initialize the snake in the center of the game field
+        isGameStopped = false; // Set the game as not stopped
+        score = 0; // Initialize the score
+        setScore(score); // Display the initial score
+        createNewApple(); // Create the first apple
+        drawScene(); // Draw the initial game scene
+        turnDelay = 300; // Set the initial turn delay
+        setTurnTimer(turnDelay); // Start the game timer
     }
 
     /**
@@ -45,11 +46,11 @@ public class SnakeGame extends Game {
     private void drawScene() {
         for (int x = 0; x < WIDTH; x++) {
             for (int y = 0; y < HEIGHT; y++) {
-                setCellValueEx(x, y, Color.GRAY, "");
+                setCellValueEx(x, y, Color.GRAY, ""); // Clear the game field
             }
         }
-        snake.draw(this);
-        apple.draw(this);
+        snake.draw(this); // Draw the snake on the game field
+        apple.draw(this); // Draw the apple on the game field
     }
 
     /**
@@ -59,21 +60,21 @@ public class SnakeGame extends Game {
      */
     @Override
     public void onTurn(int step) {
-        snake.move(apple);
-        if (!apple.isAlive) {
-            score += 5;
-            setScore(score);
-            turnDelay -= 10;
-            setTurnTimer(turnDelay);
-            createNewApple();
+        snake.move(apple); // Move the snake and check for apple consumption
+        if (!apple.isAlive) { // If the apple was eaten
+            score += 5; // Increase the score
+            setScore(score); // Update the displayed score
+            turnDelay -= 10; // Speed up the game
+            setTurnTimer(turnDelay); // Update the game timer
+            createNewApple(); // Create a new apple
         }
-        if (!snake.isAlive) {
-            gameOver();
+        if (!snake.isAlive) { // If the snake is dead
+            gameOver(); // End the game
         }
-        if (snake.getLength() > GOAL) {
-            win();
+        if (snake.getLength() > GOAL) { // If the snake reaches the goal length
+            win(); // The player wins the game
         }
-        drawScene();
+        drawScene(); // Redraw the game scene
     }
 
     /**
@@ -83,18 +84,18 @@ public class SnakeGame extends Game {
      */
     @Override
     public void onKeyPress(Key key) {
-        if (key == Key.SPACE && isGameStopped) {
-            createGame();
+        if (key == Key.SPACE && isGameStopped) { // If SPACE is pressed and the game is stopped
+            createGame(); // Restart the game
         }
-        if (snake != null) {
+        if (snake != null) { // If the snake exists
             if (key == Key.LEFT) {
-                snake.setDirection(Direction.LEFT);
+                snake.setDirection(Direction.LEFT); // Change snake direction to LEFT
             } else if (key == Key.UP) {
-                snake.setDirection(Direction.UP);
+                snake.setDirection(Direction.UP); // Change snake direction to UP
             } else if (key == Key.RIGHT) {
-                snake.setDirection(Direction.RIGHT);
+                snake.setDirection(Direction.RIGHT); // Change snake direction to RIGHT
             } else if (key == Key.DOWN) {
-                snake.setDirection(Direction.DOWN);
+                snake.setDirection(Direction.DOWN); // Change snake direction to DOWN
             }
         }
     }
@@ -107,28 +108,28 @@ public class SnakeGame extends Game {
         int newX;
         int newY;
         do {
-            newX = getRandomNumber(WIDTH);
-            newY = getRandomNumber(HEIGHT);
-            apple = new Apple(newX, newY);
+            newX = getRandomNumber(WIDTH); // Generate a random x-coordinate
+            newY = getRandomNumber(HEIGHT); // Generate a random y-coordinate
+            apple = new Apple(newX, newY); // Create a new apple
         }
-        while (snake.checkCollision(apple));
+        while (snake.checkCollision(apple)); // Repeat if the apple is placed on the snake
     }
 
     /**
      * Ends the game and displays a "GAME OVER" message.
      */
     private void gameOver() {
-        stopTurnTimer();
-        isGameStopped = true;
-        showMessageDialog(Color.BLACK, "GAME OVER!", Color.WHITE, 75);
+        stopTurnTimer(); // Stop the game timer
+        isGameStopped = true; // Set the game as stopped
+        showMessageDialog(Color.BLACK, "GAME OVER!", Color.WHITE, 75); // Display "GAME OVER!" message
     }
 
     /**
      * Ends the game and displays a "YOU WIN!" message.
      */
     private void win() {
-        stopTurnTimer();
-        isGameStopped = true;
-        showMessageDialog(Color.BLUEVIOLET, "YOU WIN!", Color.FLORALWHITE, 75);
+        stopTurnTimer(); // Stop the game timer
+        isGameStopped = true; // Set the game as stopped
+        showMessageDialog(Color.BLUEVIOLET, "YOU WIN!", Color.FLORALWHITE, 75); // Display "YOU WIN!" message
     }
 }

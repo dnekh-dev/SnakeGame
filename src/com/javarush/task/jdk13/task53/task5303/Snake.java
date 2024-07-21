@@ -9,11 +9,11 @@ import java.util.List;
  */
 public class Snake extends GameObject {
 
-    private List<GameObject> snakeParts = new ArrayList<>();
-    private static final String HEAD_SIGN = "\uD83D\uDC7E";
-    private static final String BODY_SIGN = "\u26AB";
-    public boolean isAlive = true;
-    private Direction direction = Direction.LEFT;
+    private List<GameObject> snakeParts = new ArrayList<>(); // List to store the parts of the snake
+    private static final String HEAD_SIGN = "\uD83D\uDC7E"; // Unicode symbol for the snake's head
+    private static final String BODY_SIGN = "\u26AB"; // Unicode symbol for the snake's body
+    public boolean isAlive = true; // Flag to check if the snake is alive
+    private Direction direction = Direction.LEFT; // Initial direction of the snake
 
     /**
      * Constructs a Snake object at the specified coordinates and initializes its body parts.
@@ -23,9 +23,9 @@ public class Snake extends GameObject {
      */
     public Snake(int x, int y) {
         super(x, y);
-        snakeParts.add(new GameObject(x, y));
-        snakeParts.add(new GameObject(x + 1, y));
-        snakeParts.add(new GameObject(x + 2, y));
+        snakeParts.add(new GameObject(x, y)); // Add the head of the snake
+        snakeParts.add(new GameObject(x + 1, y)); // Add the first body part
+        snakeParts.add(new GameObject(x + 2, y)); // Add the second body part
     }
 
     /**
@@ -35,9 +35,9 @@ public class Snake extends GameObject {
      */
     public void draw(Game game) {
         for (int i = 0; i < snakeParts.size(); i++) {
-            if (i == 0) {
+            if (i == 0) { // If it's the head
                 game.setCellValueEx(snakeParts.get(i).x, snakeParts.get(i).y, Color.NONE, HEAD_SIGN, isAlive ? Color.GREEN : Color.RED, 75);
-            } else {
+            } else { // If it's the body
                 game.setCellValueEx(snakeParts.get(i).x, snakeParts.get(i).y, Color.NONE, BODY_SIGN, isAlive ? Color.BLACK : Color.RED, 75);
             }
         }
@@ -49,13 +49,14 @@ public class Snake extends GameObject {
      * @param direction The new direction of the snake.
      */
     public void setDirection(Direction direction) {
+        // Prevent the snake from reversing direction directly
         if ((this.direction == Direction.LEFT || this.direction == Direction.RIGHT) && snakeParts.get(0).x == snakeParts.get(1).x) {
             return;
         }
         if ((this.direction == Direction.UP || this.direction == Direction.DOWN) && snakeParts.get(0).y == snakeParts.get(1).y) {
             return;
         }
-
+        // Prevent the snake from moving directly opposite to its current direction
         if (direction == Direction.UP && this.direction == Direction.DOWN) {
             return;
         } else if (direction == Direction.LEFT && this.direction == Direction.RIGHT) {
@@ -65,8 +66,7 @@ public class Snake extends GameObject {
         } else if (direction == Direction.DOWN && this.direction == Direction.UP) {
             return;
         }
-
-        this.direction = direction;
+        this.direction = direction; // Set the new direction
     }
 
     /**
@@ -84,21 +84,22 @@ public class Snake extends GameObject {
      * @param apple The apple that the snake can eat.
      */
     public void move(Apple apple) {
-        GameObject newHead = createNewHead();
-        if (checkCollision(newHead)) {
-            isAlive = false;
+        GameObject newHead = createNewHead(); // Create a new head for the snake based on its current direction
+        if (checkCollision(newHead)) { // Check if the new head collides with the snake's body
+            isAlive = false; // The snake dies if it collides with itself
             return;
         }
-        if (apple.x == newHead.x && apple.y == newHead.y) {
-            apple.isAlive = false;
-            snakeParts.add(new GameObject(snakeParts.get(snakeParts.size() - 1).x + 1, y));
+        if (apple.x == newHead.x && apple.y == newHead.y) { // Check if the snake eats the apple
+            apple.isAlive = false; // The apple is eaten
+            snakeParts.add(new GameObject(snakeParts.get(snakeParts.size() - 1).x + 1, y)); // Grow the snake
         } else {
+            // Check if the new head is within the game boundaries
             if (newHead.x < 0 || newHead.x > 14 || newHead.y < 0 || newHead.y > 14) {
-                isAlive = false;
+                isAlive = false; // The snake dies if it moves out of bounds
                 return;
             }
-            snakeParts.add(0, newHead);
-            removeTail();
+            snakeParts.add(0, newHead); // Move the snake by adding the new head at the beginning
+            removeTail(); // Remove the tail to keep the snake length constant if no apple is eaten
         }
     }
 
@@ -108,13 +109,14 @@ public class Snake extends GameObject {
      * @return The new head of the snake.
      */
     public GameObject createNewHead() {
-        if (direction == Direction.RIGHT) {
+        if (direction == Direction.RIGHT) { // Move right
             return new GameObject(snakeParts.get(0).x + 1, snakeParts.get(0).y);
-        } else if (direction == Direction.DOWN) {
+        } else if (direction == Direction.DOWN) { // Move down
             return new GameObject(snakeParts.get(0).x, snakeParts.get(0).y + 1);
-        } else if (direction == Direction.LEFT) {
+        } else if (direction == Direction.LEFT) { // Move left
             return new GameObject(snakeParts.get(0).x - 1, snakeParts.get(0).y);
         }
+        // Move up
         return new GameObject(snakeParts.get(0).x, snakeParts.get(0).y - 1);
     }
 
@@ -122,7 +124,7 @@ public class Snake extends GameObject {
      * Removes the tail of the snake, making it shorter.
      */
     public void removeTail() {
-        snakeParts.remove(snakeParts.size() - 1);
+        snakeParts.remove(snakeParts.size() - 1); // Remove the last part of the snake
     }
 
     /**
@@ -134,10 +136,10 @@ public class Snake extends GameObject {
     public boolean checkCollision(GameObject gameObject) {
         for (int i = 0; i < snakeParts.size(); i++) {
             if (gameObject.x == snakeParts.get(i).x && gameObject.y == snakeParts.get(i).y) {
-                return true;
+                return true; // Collision detected
             }
         }
-        return false;
+        return false; // No collision
     }
 
     /**
@@ -146,6 +148,6 @@ public class Snake extends GameObject {
      * @return The length of the snake.
      */
     public int getLength() {
-        return snakeParts.size();
+        return snakeParts.size(); // Return the size of the snake parts list
     }
 }
