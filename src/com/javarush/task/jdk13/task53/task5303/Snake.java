@@ -89,4 +89,8 @@ public class Snake extends GameObject {
         }
         return false;
     }
+
+    public int getLength() {
+        return snakeParts.size();
+    }
 }
